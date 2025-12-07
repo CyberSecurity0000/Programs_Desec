@@ -13,7 +13,7 @@ int main (void)
 	struct sockaddr_in alvo; // Armazena IP e Porta de destino
 	
 	// Criando Socket: AF_INET = IPv4, SOCK_STREAM = TCP
-	meusocket = socket(AF_INET, SOCKSTREAM, 0);
+	meusocket = socket(AF_INET, SOCK_STREAM, 0);
 
 	/* Configuracoes do Alvo */
 
