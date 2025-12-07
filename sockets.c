@@ -19,7 +19,7 @@ int main (void)
 
 	// IPv4 + Porta
 	alvo.sin_family = AF_INET;
-	alvo.sin_family = htons(80);
+	alvo.sin_port = htons(80);
 
 	// Converter String para formato de rede + Armazenamento na 'Struct'
 	alvo.sin_addr.s_addr = inet_addr("192.168.0.1");
