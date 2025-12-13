@@ -39,7 +39,7 @@ def port_scanner(ip):
         
             # Socket
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(0.5)
+            #s.settimeout(0.5)
 
             if s.connect_ex((ip, i)) == 0:
             
