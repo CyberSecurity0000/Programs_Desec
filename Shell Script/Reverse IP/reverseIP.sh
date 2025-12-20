@@ -49,7 +49,7 @@ else
 	for i in $(seq 1 254)
 	do
 		ip=$(cat ip.txt | cut -d "." -f 1-3)
-		cmd2=$(host $ip.$i 2>/dev/null | grep "$1" | cut -d " " -f 5)
+		cmd2=$(host $ip.$i 2>/dev/null | grep "$1" | cut -d " " -f 5 | sed 's/.$//g')
 		
 		if [ -n "$cmd2" ]
 		then
