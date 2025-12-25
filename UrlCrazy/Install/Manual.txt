@@ -1,0 +1,25 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ FASE 0 +
+++++++++++
+
+# Tools
+urlcrazy
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
+# Dependências
+apt install -y git ruby-full ruby-dev build-essential bundler
+git clone https://github.com/urbanadventurer/urlcrazy.git
+
+# Ferramenta
+cd urlcrazy
+bundle install
+chmod +x urlcrazy
+urlcrazy --help
