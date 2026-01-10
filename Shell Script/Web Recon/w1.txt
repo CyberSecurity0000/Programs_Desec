@@ -1,0 +1,15 @@
+uploads
+admin
+restritos
+arquivo
+css
+js
+prog
+img
+lol
+cuzao
+porra
+robots
+index
+home
+login
