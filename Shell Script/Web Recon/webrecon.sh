@@ -96,6 +96,25 @@ listagem_diretorio()
 	done < $2	
 }
 
+
+listagem_paginas()
+{
+
+	# Lê a wordlist linha por linha
+	while read -r team
+	do
+		status_code2=$(curl -w %{http_code} -s -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "$1/$team" -o /dev/null)
+		
+		# Se o arquivo existir (HTTP 200), exibe na tela
+		if [ "$status_code2" -eq 200 ]
+		then
+			echo -e "\033[01;35mPagina encontrada: \033[00;00m\033[01;33m$1/$team\033[00;00m"
+		fi
+	
+	done < $2
+}
+
+
 listagem_extensao()
 {
 	# Lê a wordlist e testa arquivos com extensão definida
@@ -129,19 +148,21 @@ else
 	
 	"")
 		# Modo padrão: apenas diretórios
-		buscando_arq
+		buscando_dir
 		tecnologia $1
 		
 		buscando_dir
-		listagem_diretorio $1 $2;;
+		listagem_diretorio $1 $2
+		listagem_paginas $1 $2;;
     
         "-t")
 		# Modo completo: diretórios + arquivos por extensão
 		buscando_arq_dir
 		tecnologia $1 
-	
+
 		buscando_dir
 		listagem_diretorio $1 $2
+		listagem_paginas $1 $2
 
 		buscando_arq
 		listagem_extensao $1 $2 $3 $4;;
