@@ -1,0 +1,38 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ FASE 0 +
+++++++++++
+
+# Tools
+portsentry
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
+# Configuração
+vi /etc/portsentry/portsentry.conf
+
+1) Seguir Imagens na pasta "Configuration"
+2) reiniciar KALI
+
+# Controle de regras e Bloqueio de alvos
++ Obs: Alterando as regras do IPTABLES ou retirando alvo do "host.deny", reiniciar Kali
+
+iptables -nL 
+cat /etc/hosts.deny
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
+# Modo Honeypot + Monitoramento
+portsentry --connect
+
+# Ver portas tem abertas TCP
+netstat -ntlp

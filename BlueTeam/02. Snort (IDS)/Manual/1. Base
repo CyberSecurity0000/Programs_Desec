@@ -1,0 +1,46 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ FASE 0 +
+++++++++++
+
+# Instalação
+apt install snort snort-common snort-common-libraries snort-rules-default
+snort -c /etc/snort/snort.lua
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
++ Criação de ambiente para regras
+
+# Pastas
+cd /etc
+mkdir /etc/rules
+
+# Padronização da regra
+cp /etc/snort/rules/icmp-info.rules /etc/rules
+
+# !!! IMPORTANTE se for criado um arquivo snort.lua --> DELETAR
+snort2lua -c /etc/snort/rules/icmp-info.rules -r /etc/rules/icmp-info.rules # Transferindo regra ICMP
+
+# Teste de regras
+snort -c /etc/snort/snort.lua -A fast --tweaks snort.debian -i eth0 --rule-path=/etc/rules
+snort -c /etc/snort/snort.lua -A fast --tweaks snort.debian -i eth0 --rule-path=/etc/rules -q
+
+
+++++++++++
++ FASE 2 +
+++++++++++
+
++ Execução
+
+# Saida com logs (com log -> ver imagem)
+snort -c /etc/snort/snort.lua -i eth0 -A alert_fast -u snort -g snort -m 027 -l /var/log/snort --tweaks /etc/snort/snort.debian --rule-path=/etc/rules -q
+tail -f /var/log/alert_fast.txt
+
+# Saida Terminal (sem log -> ver imagem)
+snort -c /etc/snort/snort.lua -i eth0 -A fast -u snort -g snort --tweaks snort.debian --rule-path=/etc/rules -q

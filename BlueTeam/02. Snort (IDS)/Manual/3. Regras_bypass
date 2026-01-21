@@ -1,0 +1,36 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ Rule 1 +
+++++++++++
+
+# Regra: ICMP PING *NIX
+grep -r "ICMP PING \*NIX" /etc/snort/rules
+msg:"ICMP PING *NIX"; itype:8; content:"|10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F|"
+
+# Bypass
+ping 192.168.0.28 -c 1 -p "0000000000"
+
+
+++++++++++
++ Rule 2 +
+++++++++++
+
+grep -r "\"ICMP PING\"" /etc/snort/rules
+msg:"ICMP PING"; icode:0; itype:8; classtype:misc-activity; sid:384; rev:5;
+
+# Bypass
+hping3 --icmptype 8 --icmpcode 1 192.168.0.28
+
+
+++++++++++
++ Rule 3 +
+++++++++++
+
+grep -r "ICMP PING NMAP" /etc/rules 
+msg:"ICMP PING NMAP"; dsize:0; itype:8; reference:arachnids,162; classtype:attempted-recon; sid:469; rev:3;
+
+# Bypass
+hping3 --icmptype 8 --icmpcode 1 -d 1 192.168.0.28

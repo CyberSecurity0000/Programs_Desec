@@ -1,0 +1,37 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ FASE 0 +
+++++++++++
+
+# Melhor prática: bloquear tudo e ir liberando só o que precisa (modelo Zero Trust)
+# Tools
+iptables
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
+# Kali: 192.168.0.26
+# Permite acesso HTTP do Kali para o servidor
+iptables -A INPUT -p tcp --dport 80 -s 192.168.0.26 -d 192.168.0.201 -j ACCEPT
+
+# Permite SSH (porta 22) só do Kali
+iptables -A INPUT -p tcp --dport 22 -s 192.168.0.26 -d 192.168.0.201 -j ACCEPT
+
+
+++++++++++
++ FASE 2 +
+++++++++++
+
+# Enganando Port Scan
+iptables -A INPUT -p tcp --dport 80 -j REJECT --reject-with tcp-reset
+
+# Monitoramento de pacotes
+iptables -nvL
+iptables -A INPUT -s 192.168.0.29 -j ACCEPT
+iptables -A OUTPUT -d 192.168.0.29 -j ACCEPT
+iptables -Z # Zerar pacotes

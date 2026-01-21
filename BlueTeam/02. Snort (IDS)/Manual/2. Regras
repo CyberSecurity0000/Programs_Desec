@@ -1,0 +1,51 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ FASE 0 +
+++++++++++
+
+# Instalação
+apt install snort snort-common snort-common-libraries snort-rules-default
+snort -c /etc/snort/snort.lua
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
++ Criando regras
+
+# Pasta
+vi /etc/snort/rules/desec.rules
+=------------------------------------------------------------------------------------------------------------------
+# All Ports
+alert tcp any any -> 192.168.0.28 any (msg: "Possivel Port Scanning";sid:1000001;rev:01;)
+
+# SSH
+alert tcp any any -> 192.168.0.28 22 (msg:"Pacote SYN enviado ao SSH";flags:S;sid:1000002;rev:01;)
+
+# Web
+alert tcp any any -> 192.168.0.28 80 (msg:"Acesso ao arquivo robots.txt";content:"robots.txt";sid:1000003;rev:01;)
+
+# SQLi
+alert tcp any any -> 192.168.0.28 80 (msg:"Possivel ataque SQL Injection"; content:"%27";sid:1000004;rev:01;)
+-------------------------------------------------------------------------------------------------------------------
+
+# Copia para nossa pasta de regras
+cp /etc/snort/rules/desec.rules /etc/rules
+
+
+++++++++++
++ FASE 2 +
+++++++++++
+
++ Execução
+
+# Saida com logs (com log -> ver imagem)
+snort -c /etc/snort/snort.lua -i eth0 -A alert_fast -u snort -g snort -m 027 -l /var/log/snort --tweaks /etc/snort/snort.debian --rule-path=/etc/rules -q
+tail -f /var/log/alert_fast.txt
+
+# Saida Terminal (sem log -> ver imagem)
+snort -c /etc/snort/snort.lua -i eth0 -A fast -u snort -g snort --tweaks snort.debian --rule-path=/etc/rules -q

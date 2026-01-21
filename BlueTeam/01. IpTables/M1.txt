@@ -1,0 +1,64 @@
+==============
+    MANUAL    
+==============
+
+++++++++++
++ FASE 0 +
+++++++++++
+
++ Melhor prática: bloquear tudo e ir liberando só o que precisa (modelo Zero Trust)
+
+# Tools
+iptables
+
+
+++++++++++
++ FASE 1 +
+++++++++++
+
+# Mostra regras atuais (numérico) e limpa todas
+iptables -nL
+iptables -F
+
+# Define política padrão - Tudo que entra (INPUT) é bloqueado
+iptables -P INPUT DROP
+
+# Tudo que sai (OUTPUT) é permitido
+iptables -P OUTPUT ACCEPT
+
+# Libera ICMP (ping)
+iptables -A INPUT -p icmp -j ACCEPT
+
+# Libera todo UDP (cuidado, bem aberto)
+iptables -A INPUT -p udp -j ACCEPT
+
+iptables -A INPUT -p icmp -j REJECT
+
+
+++++++++++
++ FASE 2 +
+++++++++++
+
+# Lista regras com número (para poder apagar)
+iptables -L -n --line-numbers
+iptables -D INPUT 3 # Apaga a regra número 3 da cadeia INPUT
+
+# Libera HTTP (porta 80) para todos
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+# Libera só ICMP Echo (ping)
+iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT
+
+# Regra ruim: libera tudo e depois tenta bloquear porta
+# (ordem importa — isso aqui é péssima prática)
+iptables -A INPUT -p tcp --dport 80 -j DROP
+
+
+++++++++++
++ FASE 3 +
+++++++++++
+
+# Porta de origem
+iptables -A INPUT -p udp --sport 53 -j ACCEPT   # resposta DNS
+iptables -A INPUT -p tcp --sport 80 -j ACCEPT   # resposta HTTP
+iptables -A INPUT -p tcp --sport 443 -j ACCEPT  # resposta HTTPS
